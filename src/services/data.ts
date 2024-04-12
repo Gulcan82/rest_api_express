@@ -1,16 +1,20 @@
-import * as fs from 'node:fs'
-import { Note } from '../types/notes'
+import fs from 'fs';
 
-type NotesRaw = {
-  notes: Note[]
+export function addNote(title: string, content: string, user: string): void {
+  // Lese die aktuellen Notizen aus der JSON-Datei
+  const notes = JSON.parse(fs.readFileSync('notes.json', 'utf-8'));
 
+  // Erstelle eine neue Notiz mit einer eindeutigen ID
+  const newNote = {
+    id: notes.length + 1, // Annahme: Die ID ist die Anzahl der vorhandenen Notizen + 1
+    title,
+    content,
+    user
+  };
 
-}
+  // Füge die neue Notiz zum Array der Notizen hinzu
+  notes.push(newNote);
 
-
-export function getNotes(): Note [] {
-  const notesRaw = fs.readFileSync('data/notes.json', 'utf8')
-  const notizen = JSON.parse(notesRaw)
-  const array = notizen.notes
-  return array
+  // Schreibe die aktualisierten Notizen zurück in die JSON-Datei
+  fs.writeFileSync('notes.json', JSON.stringify(notes, null, 2));
 }

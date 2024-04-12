@@ -1,27 +1,11 @@
-import express, {Request, Response } from 'express'
-import { infoRouter } from './routes/info'
-import { notesRouter } from './routes/notes.rotes'
-// we define our server and port
+// index.ts
+import express from "express";
+import notesRouter from "../routes/notes"; // Hier den korrekten Import verwenden
 
-const app = express()
-const port = 3000
+const app = express();
 
-// Setup custom middleware
+app.use("/notes", notesRouter);
 
-app.use(express.urlencoded({ extended: true }))
-app.use(express.json())
-
-// Setup routes
-app.use('/info', infoRouter)
-app.use('/notes', notesRouter)
-
-// http-request: method (GET,POST, ...), URL (path)
-// this structure is used by express
-app.get('/', (req: Request, res: Response) => {
-    res.send('GET - Hallo Welt! Ich bin ein Express-Server.')
-})
-// start our server
-
-app.listen(port, () => {
-    console.log(`Server is runnig at http://localhost:${port}`)
-  })
+app.listen(3000, () => {
+  console.log("Server is running on port 3000");
+});
